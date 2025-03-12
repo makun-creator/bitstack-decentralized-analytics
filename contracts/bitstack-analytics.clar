@@ -345,3 +345,38 @@
         (ok true)
     )
 )
+
+;; Pauses the contract, disabling certain functions
+(define-public (pause-contract)
+    (begin
+        (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
+        (var-set contract-paused true)
+        (ok true)
+    )
+)
+
+;; Resumes the contract, re-enabling certain functions
+(define-public (resume-contract)
+    (begin
+        (asserts! (is-eq tx-sender CONTRACT-OWNER) ERR-NOT-AUTHORIZED)
+        (var-set contract-paused false)
+        (ok true)
+    )
+)
+
+;; read only functions
+
+;; Returns the contract owner
+(define-read-only (get-contract-owner)
+    (ok CONTRACT-OWNER)
+)
+
+;; Returns the current STX pool balance
+(define-read-only (get-stx-pool)
+    (ok (var-get stx-pool))
+)
+
+;; Returns the current proposal count
+(define-read-only (get-proposal-count)
+    (ok (var-get proposal-count))
+)
